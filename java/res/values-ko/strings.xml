@@ -170,7 +170,6 @@
     <string name="prefs_keypress_vibration_duration_settings" msgid="7918341459947439226">"키를 누를 때 진동 시간"</string>
     <string name="prefs_keypress_sound_volume_settings" msgid="6027007337036891623">"키를 누를 때 소리 볼륨"</string>
     <string name="prefs_read_external_dictionary" msgid="2588931418575013067">"외부 사전 파일 읽기"</string>
-    <string name="read_external_dictionary_no_files_message" msgid="4947420942224623792">"다운로드 폴더에 사전 파일이 없음"</string>
     <string name="read_external_dictionary_multiple_files_title" msgid="7637749044265808628">"설치할 사전 파일 선택"</string>
     <string name="read_external_dictionary_confirm_install_message" msgid="6898610163768980870">"이 파일을 <xliff:g id="LOCALE_NAME">%s</xliff:g>(으)로 설치하시겠습니까?"</string>
     <string name="error" msgid="8940763624668513648">"오류 발생"</string>

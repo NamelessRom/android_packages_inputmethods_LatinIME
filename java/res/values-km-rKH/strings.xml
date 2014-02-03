@@ -170,7 +170,6 @@
     <string name="prefs_keypress_vibration_duration_settings" msgid="7918341459947439226">"ថិរវេលា​​ញ័រ​​ពេល​ចុច​គ្រាប់ចុច"</string>
     <string name="prefs_keypress_sound_volume_settings" msgid="6027007337036891623">"កម្រិត​សំឡេង​ពេល​ចុច​គ្រាប់​ចុច"</string>
     <string name="prefs_read_external_dictionary" msgid="2588931418575013067">"អាន​ឯកសារ​វចនានុក្រម​ខាង​ក្រៅ"</string>
-    <string name="read_external_dictionary_no_files_message" msgid="4947420942224623792">"គ្មាន​ឯកសារ​វចនានុក្រម​នៅ​ក្នុង​ថត​ទាញ​យក"</string>
     <string name="read_external_dictionary_multiple_files_title" msgid="7637749044265808628">"ជ្រើស​ឯកសារ​វចនានុក្រម​ ដើម្បី​ដំឡើង"</string>
     <string name="read_external_dictionary_confirm_install_message" msgid="6898610163768980870">"ពិត​ជា​ដំឡើង​ឯកសារ​នេះ​សម្រាប់ <xliff:g id="LOCALE_NAME">%s</xliff:g> ឬ?"</string>
     <string name="error" msgid="8940763624668513648">"មាន​កំហុស"</string>

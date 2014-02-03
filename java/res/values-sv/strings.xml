@@ -170,7 +170,6 @@
     <string name="prefs_keypress_vibration_duration_settings" msgid="7918341459947439226">"Vibrationslängd för tangenter"</string>
     <string name="prefs_keypress_sound_volume_settings" msgid="6027007337036891623">"Ljudvolym för tangenter"</string>
     <string name="prefs_read_external_dictionary" msgid="2588931418575013067">"Läs extern ordboksfil"</string>
-    <string name="read_external_dictionary_no_files_message" msgid="4947420942224623792">"Inga ordboksfiler i mappen Hämtningar"</string>
     <string name="read_external_dictionary_multiple_files_title" msgid="7637749044265808628">"Välj en ordboksfil att installera"</string>
     <string name="read_external_dictionary_confirm_install_message" msgid="6898610163768980870">"Vill du verkligen installera filen för <xliff:g id="LOCALE_NAME">%s</xliff:g>?"</string>
     <string name="error" msgid="8940763624668513648">"Ett fel uppstod"</string>
