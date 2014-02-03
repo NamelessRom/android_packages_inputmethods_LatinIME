@@ -53,6 +53,7 @@ import com.android.inputmethod.latin.utils.SubtypeLocaleUtils;
 import com.android.inputmethod.research.ResearchLogger;
 import com.android.inputmethodcommon.InputMethodSettingsFragment;
 
+import java.io.File;
 import java.util.TreeSet;
 
 public final class SettingsFragment extends InputMethodSettingsFragment
@@ -258,6 +259,12 @@ public final class SettingsFragment extends InputMethodSettingsFragment
         setupKeypressVibrationDurationSettings(prefs, res);
         setupKeypressSoundVolumeSettings(prefs, res);
         refreshEnablingsOfKeypressSoundAndVibrationSettings(prefs, res);
+
+        final File f = new File(ExternalDictionaryGetterForDebug.SOURCE_FOLDER);
+        if (!f.exists()) {
+            Log.v(TAG, "Created " + ExternalDictionaryGetterForDebug.SOURCE_FOLDER + ": "
+                    + (f.mkdirs() ? "true" : "false"));
+        }
     }
 
     @Override
