@@ -48,25 +48,19 @@ public class ExternalDictionaryGetterForDebug {
             + "/Nameless/LatinIME";
 
     private static String[] findDictionariesInTheDownloadedFolder() {
-        final File[] files = new File(SOURCE_FOLDER).listFiles();
-        final ArrayList<String> eligibleList = CollectionUtils.newArrayList();
-        for (File f : files) {
-            final FileHeader header = DictionaryInfoUtils.getDictionaryFileHeaderOrNull(f);
-            if (null == header) continue;
-            eligibleList.add(f.getName());
-        }
-        return eligibleList.toArray(new String[0]);
+        final String[] fileNames = new String[]{
+                "main_bg.dict", "main_cs.dict", "main_da.dict", "main_de.dict",
+                "main_el.dict", "main_en.dict", "main_es.dict", "main_fi.dict",
+                "main_fr.dict", "main_hr.dict", "main_hu.dict", "main_it.dict",
+                "main_iw.dict", "main_ka.dict", "main_nb.dict", "main_nl.dict",
+                "main_pt_br.dict", "main_pt_pt.dict", "main_ru.dict", "main_sv.dict"
+        };
+        return fileNames;
     }
 
     public static void chooseAndInstallDictionary(final Context context) {
         final String[] fileNames = findDictionariesInTheDownloadedFolder();
-        if (0 == fileNames.length) {
-            showNoFileDialog(context);
-        } else if (1 == fileNames.length) {
-            askInstallFile(context, SOURCE_FOLDER, fileNames[0], null /* completeRunnable */);
-        } else {
-            showChooseFileDialog(context, fileNames);
-        }
+        showChooseFileDialog(context, fileNames);
     }
 
     private static void showNoFileDialog(final Context context) {
