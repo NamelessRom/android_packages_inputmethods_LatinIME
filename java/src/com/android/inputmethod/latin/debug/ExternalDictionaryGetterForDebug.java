@@ -17,11 +17,15 @@
 package com.android.inputmethod.latin.debug;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
+import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.PowerManager;
+import android.util.Log;
 
 import com.android.inputmethod.latin.BinaryDictionaryFileDumper;
 import com.android.inputmethod.latin.BinaryDictionaryGetter;
@@ -37,6 +41,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -47,37 +55,24 @@ public class ExternalDictionaryGetterForDebug {
     public static final String SOURCE_FOLDER = Environment.getExternalStorageDirectory().getPath()
             + "/Nameless/LatinIME";
 
+    private static final String URL_PREFIX
+            = "http://sourceforge.net/projects/namelessrom/files/romextras/dictionaries/";
+    private static final String URL_SUFFIX = "/download";
+
     private static String[] findDictionariesInTheDownloadedFolder() {
-        final File[] files = new File(SOURCE_FOLDER).listFiles();
-        final ArrayList<String> eligibleList = CollectionUtils.newArrayList();
-        for (File f : files) {
-            final FileHeader header = DictionaryInfoUtils.getDictionaryFileHeaderOrNull(f);
-            if (null == header) continue;
-            eligibleList.add(f.getName());
-        }
-        return eligibleList.toArray(new String[0]);
+        final String[] fileNames = new String[]{
+                "main_bg.dict", "main_cs.dict", "main_da.dict", "main_de.dict",
+                "main_el.dict", "main_en.dict", "main_es.dict", "main_fi.dict",
+                "main_fr.dict", "main_hr.dict", "main_hu.dict", "main_it.dict",
+                "main_iw.dict", "main_ka.dict", "main_nb.dict", "main_nl.dict",
+                "main_pt_br.dict", "main_pt_pt.dict", "main_ru.dict", "main_sv.dict"
+        };
+        return fileNames;
     }
 
     public static void chooseAndInstallDictionary(final Context context) {
         final String[] fileNames = findDictionariesInTheDownloadedFolder();
-        if (0 == fileNames.length) {
-            showNoFileDialog(context);
-        } else if (1 == fileNames.length) {
-            askInstallFile(context, SOURCE_FOLDER, fileNames[0], null /* completeRunnable */);
-        } else {
-            showChooseFileDialog(context, fileNames);
-        }
-    }
-
-    private static void showNoFileDialog(final Context context) {
-        new AlertDialog.Builder(context)
-                .setMessage(R.string.read_external_dictionary_no_files_message)
-                .setPositiveButton(android.R.string.ok, new OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which) {
-                        dialog.dismiss();
-                    }
-                }).create().show();
+        showChooseFileDialog(context, fileNames);
     }
 
     private static void showChooseFileDialog(final Context context, final String[] fileNames) {
@@ -86,8 +81,14 @@ public class ExternalDictionaryGetterForDebug {
                 .setItems(fileNames, new OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialog, final int which) {
-                        askInstallFile(context, SOURCE_FOLDER, fileNames[which],
-                                null /* completeRunnable */);
+                        final String fileName = fileNames[which];
+                        final String url = URL_PREFIX + fileName + URL_SUFFIX;
+                        if (!new File(SOURCE_FOLDER, fileName).exists()) {
+                            new DownloadTask(context).execute(url, fileName);
+                        } else {
+                            askInstallFile(context, SOURCE_FOLDER, fileName,
+                                    null /* completeRunnable */);
+                        }
                     }
                 })
                 .create().show();
@@ -97,7 +98,7 @@ public class ExternalDictionaryGetterForDebug {
      * Shows a dialog which offers the user to install the external dictionary.
      */
     public static void askInstallFile(final Context context, final String dirPath,
-            final String fileName, final Runnable completeRunnable) {
+                                      final String fileName, final Runnable completeRunnable) {
         final File file = new File(dirPath, fileName.toString());
         final FileHeader header = DictionaryInfoUtils.getDictionaryFileHeaderOrNull(file);
         final String locale = header.getLocaleString();
@@ -120,27 +121,27 @@ public class ExternalDictionaryGetterForDebug {
                         }
                     }
                 }).setPositiveButton(android.R.string.ok, new OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which) {
-                        installFile(context, file, header);
-                        dialog.dismiss();
-                        if (completeRunnable != null) {
-                            completeRunnable.run();
-                        }
-                    }
-                }).setOnCancelListener(new OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        // Canceled by the user by hitting the back key
-                        if (completeRunnable != null) {
-                            completeRunnable.run();
-                        }
-                    }
-                }).create().show();
+            @Override
+            public void onClick(final DialogInterface dialog, final int which) {
+                installFile(context, file, header);
+                dialog.dismiss();
+                if (completeRunnable != null) {
+                    completeRunnable.run();
+                }
+            }
+        }).setOnCancelListener(new OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                // Canceled by the user by hitting the back key
+                if (completeRunnable != null) {
+                    completeRunnable.run();
+                }
+            }
+        }).create().show();
     }
 
     private static void installFile(final Context context, final File file,
-            final FileHeader header) {
+                                    final FileHeader header) {
         BufferedOutputStream outputStream = null;
         File tempFile = null;
         try {
@@ -180,6 +181,93 @@ public class ExternalDictionaryGetterForDebug {
                 if (null != tempFile) tempFile.delete();
             } catch (IOException e) {
                 // Don't do anything
+            }
+        }
+    }
+
+    private static class DownloadTask extends AsyncTask<String, Integer, String> {
+
+        private String filePath = "";
+        private String fileName = "";
+        private Context mContext;
+        private ProgressDialog mDialog;
+
+        private DownloadTask(Context context) {
+            mContext = context;
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            mDialog = new ProgressDialog(mContext);
+            mDialog.setTitle(R.string.dialog_download_title);
+            mDialog.setMessage(mContext.getString(R.string.dialog_download_message));
+            mDialog.setCancelable(true);
+            mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(final String... pParams) {
+
+            InputStream input = null;
+            OutputStream output = null;
+            HttpURLConnection connection = null;
+            try {
+                final URL url = new URL(pParams[0]);
+                Log.v("LatinIME", "Url: " + url);
+                fileName = pParams[1];
+                filePath = SOURCE_FOLDER + File.separator + fileName;
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+
+                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    return "Server returned HTTP " + connection.getResponseCode()
+                            + " " + connection.getResponseMessage();
+                }
+
+                input = connection.getInputStream();
+                output = new FileOutputStream(filePath);
+
+                byte data[] = new byte[4096];
+                int count;
+                while ((count = input.read(data)) != -1) {
+                    if (isCancelled()) {
+                        return null;
+                    }
+                    output.write(data, 0, count);
+                }
+            } catch (Exception e) {
+                Log.e("LatinIME", "Error while downloading: " + e.toString());
+            } finally {
+                try {
+                    if (output != null) {
+                        output.close();
+                    }
+                    if (input != null) {
+                        input.close();
+                    }
+                } catch (IOException ignored) {
+                }
+
+                if (connection != null) {
+                    connection.disconnect();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onCancelled(String s) {
+            mDialog.dismiss();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            mDialog.dismiss();
+            if (!filePath.isEmpty()) {
+                Log.v("LatinIME", "Source: " + SOURCE_FOLDER + " | fileName: " + fileName);
+                askInstallFile(mContext, SOURCE_FOLDER, fileName, null /* completeRunnable */);
             }
         }
     }

@@ -170,7 +170,6 @@
     <string name="prefs_keypress_vibration_duration_settings" msgid="7918341459947439226">"Trajanje vibr. ob prit. tipke"</string>
     <string name="prefs_keypress_sound_volume_settings" msgid="6027007337036891623">"Glasn. zvoka ob pritisku tipke"</string>
     <string name="prefs_read_external_dictionary" msgid="2588931418575013067">"Branje zunanje datoteke slovarja"</string>
-    <string name="read_external_dictionary_no_files_message" msgid="4947420942224623792">"V mapi »Prenosi« ni nobene datoteke slovarja"</string>
     <string name="read_external_dictionary_multiple_files_title" msgid="7637749044265808628">"Izberite datoteko slovarja, ki jo želite namestiti"</string>
     <string name="read_external_dictionary_confirm_install_message" msgid="6898610163768980870">"Zares želite namestiti to datoteko za jezik <xliff:g id="LOCALE_NAME">%s</xliff:g>?"</string>
     <string name="error" msgid="8940763624668513648">"Prišlo je do napake"</string>
