@@ -170,7 +170,6 @@
     <string name="prefs_keypress_vibration_duration_settings" msgid="7918341459947439226">"Вибросигнал при нажатии клавиш"</string>
     <string name="prefs_keypress_sound_volume_settings" msgid="6027007337036891623">"Звук при нажатии клавиш"</string>
     <string name="prefs_read_external_dictionary" msgid="2588931418575013067">"Загрузить словарь из файла"</string>
-    <string name="read_external_dictionary_no_files_message" msgid="4947420942224623792">"В папке \"Загрузки\" нет словарей"</string>
     <string name="read_external_dictionary_multiple_files_title" msgid="7637749044265808628">"Выберите файл словаря"</string>
     <string name="read_external_dictionary_confirm_install_message" msgid="6898610163768980870">"Установить этот файл для следующего языка: <xliff:g id="LOCALE_NAME">%s</xliff:g>?"</string>
     <string name="error" msgid="8940763624668513648">"Ошибка"</string>
