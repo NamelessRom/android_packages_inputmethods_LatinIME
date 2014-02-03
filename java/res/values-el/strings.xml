@@ -170,7 +170,6 @@
     <string name="prefs_keypress_vibration_duration_settings" msgid="7918341459947439226">"Διάρκεια δόνησης πατήμ. πλήκτ."</string>
     <string name="prefs_keypress_sound_volume_settings" msgid="6027007337036891623">"Ένταση ήχου πατήματος πλήκτρου"</string>
     <string name="prefs_read_external_dictionary" msgid="2588931418575013067">"Ανάγνωση εξωτερικού αρχείου λεξικού"</string>
-    <string name="read_external_dictionary_no_files_message" msgid="4947420942224623792">"Δεν υπάρχουν αρχεία λεξικού στο φάκελο \"Λήψεις\""</string>
     <string name="read_external_dictionary_multiple_files_title" msgid="7637749044265808628">"Επιλογή αρχείου λεξικού για εγκατάσταση"</string>
     <string name="read_external_dictionary_confirm_install_message" msgid="6898610163768980870">"Να εγκατασταθεί όντως αυτό το αρχείο για <xliff:g id="LOCALE_NAME">%s</xliff:g>;"</string>
     <string name="error" msgid="8940763624668513648">"Παρουσιάστηκε σφάλμα."</string>
