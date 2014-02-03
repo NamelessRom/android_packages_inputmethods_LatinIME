@@ -225,7 +225,7 @@ public final class SettingsFragment extends InputMethodSettingsFragment
 
         final PreferenceScreen readExternalDictionary =
                 (PreferenceScreen) findPreference(Settings.PREF_READ_EXTERNAL_DICTIONARY);
-        if (null != readExternalDictionary) {
+        if (readExternalDictionary != null) {
             readExternalDictionary.setOnPreferenceClickListener(
                     new Preference.OnPreferenceClickListener() {
                         @Override
