@@ -106,6 +106,18 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".debug.ExternalDictionaryGetterForDebug"
+            android:parentActivityName=".settings.SettingsActivity" >
+            <intent-filter>
+                <action android:name="com.android.inputmethod.latin.debug.ExternalDictionaryGetterForDebug" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.android.inputmethod.latin.settings.SettingsActivity" />
+        </activity>
+
         <receiver android:name="SuggestionSpanPickedNotificationReceiver" android:enabled="true">
             <intent-filter>
                 <action android:name="android.text.style.SUGGESTION_PICKED" />

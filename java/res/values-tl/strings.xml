@@ -186,9 +186,9 @@
     <string name="setup_step2_title" msgid="6860725447906690594">"Lumipat sa <xliff:g id="APPLICATION_NAME">%s</xliff:g>"</string>
     <string name="setup_step2_instruction" msgid="9141481964870023336">"Susunod, piliin ang \"<xliff:g id="APPLICATION_NAME">%s</xliff:g>\" bilang iyong aktibong pamamaraan ng pag-input ng teksto."</string>
     <string name="setup_step2_action" msgid="1660330307159824337">"Magpalit ng pamamaraan ng pag-input"</string>
-    <string name="setup_step3_title" msgid="3154757183631490281">"Binabati kita, handa ka na!"</string>
-    <string name="setup_step3_instruction" msgid="8025981829605426000">"Ngayon, mata-type mo na ang lahat ng paborito mong apps gamit ang <xliff:g id="APPLICATION_NAME">%s</xliff:g>."</string>
-    <string name="setup_step3_action" msgid="600879797256942259">"Mag-configure ng mga karagdagang wika"</string>
+    <string name="setup_step4_title" msgid="3154757183631490281">"Binabati kita, handa ka na!"</string>
+    <string name="setup_step4_instruction" msgid="8025981829605426000">"Ngayon, mata-type mo na ang lahat ng paborito mong apps gamit ang <xliff:g id="APPLICATION_NAME">%s</xliff:g>."</string>
+    <string name="setup_step4_action" msgid="600879797256942259">"Mag-configure ng mga karagdagang wika"</string>
     <string name="setup_finish_action" msgid="276559243409465389">"Tapos na"</string>
     <string name="show_setup_wizard_icon" msgid="5008028590593710830">"Ipakita ang icon ng app"</string>
     <string name="show_setup_wizard_icon_summary" msgid="4119998322536880213">"Ipakita ang icon ng application sa launcher"</string>
