@@ -186,9 +186,9 @@
     <string name="setup_step2_title" msgid="6860725447906690594">"Bytt til <xliff:g id="APPLICATION_NAME">%s</xliff:g>"</string>
     <string name="setup_step2_instruction" msgid="9141481964870023336">"Deretter velger du  «<xliff:g id="APPLICATION_NAME">%s</xliff:g>» som den aktive inndatametoden for tekst."</string>
     <string name="setup_step2_action" msgid="1660330307159824337">"Bytt inndatametode"</string>
-    <string name="setup_step3_title" msgid="3154757183631490281">"Gratulerer, du er klar!"</string>
-    <string name="setup_step3_instruction" msgid="8025981829605426000">"Nå kan du skrive inn alle favorittappene dine med <xliff:g id="APPLICATION_NAME">%s</xliff:g>."</string>
-    <string name="setup_step3_action" msgid="600879797256942259">"Konfigurer flere språk"</string>
+    <string name="setup_step4_title" msgid="3154757183631490281">"Gratulerer, du er klar!"</string>
+    <string name="setup_step4_instruction" msgid="8025981829605426000">"Nå kan du skrive inn alle favorittappene dine med <xliff:g id="APPLICATION_NAME">%s</xliff:g>."</string>
+    <string name="setup_step4_action" msgid="600879797256942259">"Konfigurer flere språk"</string>
     <string name="setup_finish_action" msgid="276559243409465389">"Fullført"</string>
     <string name="show_setup_wizard_icon" msgid="5008028590593710830">"Vis app-ikonet"</string>
     <string name="show_setup_wizard_icon_summary" msgid="4119998322536880213">"Vis app-ikonet i appvelgeren"</string>

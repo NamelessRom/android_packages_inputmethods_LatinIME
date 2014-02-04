@@ -17,4 +17,20 @@
     <string name="dialog_download_title">Please wait…</string>
     <string name="dialog_download_message">Downloading dictionary to \"Nameless/LatinIME\"</string>
     <string name="dialog_download_oops">Oops, something went wrong!\nPlease try to manually place your dictionary into \n%s!</string>
+    <!-- Ordinal number of the 3rd step in the setup wizard. [CHAR LIMIT=5] -->
+    <string name="setup_step3_bullet" translatable="false">3</string>
+    <!-- Title of the 3rd step in the setup wizard. [CHAR LIMIT=64] -->
+    <string name="setup_step3_title">"Nearly done!"</string>
+    <!-- Detailed instruction of the 3rd step in the setup wizard. [CHAR LIMIT=120] -->
+    <string name="setup_step3_instruction">Download dictionaries to support auto correction, auto suggestion and gesture typing.</string>
+    <!-- The label of the button that triggers the screen for downloading dictionaries. [CHAR_LIMIT=64] -->
+    <string name="setup_step3_action">Download dictionaries</string>
+    <!-- Ordinal number of the 4rd step in the setup wizard. [CHAR LIMIT=5] -->
+    <string name="setup_step4_bullet" translatable="false">4</string>
+    <!-- Title of the 4rd step in the setup wizard. [CHAR LIMIT=64] -->
+    <string name="setup_step4_title">"Congratulations, you're all set!"</string>
+    <!-- Detailed instruction of the 4rd step in the setup wizard. [CHAR LIMIT=120] -->
+    <string name="setup_step4_instruction">Now you can type in all your favorite apps with <xliff:g id="application_name">%s</xliff:g>.</string>
+    <!-- The label of the button that triggers the screen for configuring additional languages of the keyboard. [CHAR_LIMIT=64] -->
+    <string name="setup_step4_action">Configure additional languages</string>
 </resources>

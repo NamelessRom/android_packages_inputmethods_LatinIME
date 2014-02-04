@@ -186,9 +186,9 @@
     <string name="setup_step2_title" msgid="6860725447906690594">"<xliff:g id="APPLICATION_NAME">%s</xliff:g>(으)로 전환"</string>
     <string name="setup_step2_instruction" msgid="9141481964870023336">"그런 다음, 텍스트 입력 방법으로 \'<xliff:g id="APPLICATION_NAME">%s</xliff:g>\'을(를) 선택합니다."</string>
     <string name="setup_step2_action" msgid="1660330307159824337">"입력 방법 전환"</string>
-    <string name="setup_step3_title" msgid="3154757183631490281">"모든 설정이 완료되었습니다."</string>
-    <string name="setup_step3_instruction" msgid="8025981829605426000">"이제 즐겨찾는 앱을 <xliff:g id="APPLICATION_NAME">%s</xliff:g>에 입력할 수 있습니다."</string>
-    <string name="setup_step3_action" msgid="600879797256942259">"추가 언어 설정"</string>
+    <string name="setup_step4_title" msgid="3154757183631490281">"모든 설정이 완료되었습니다."</string>
+    <string name="setup_step4_instruction" msgid="8025981829605426000">"이제 즐겨찾는 앱을 <xliff:g id="APPLICATION_NAME">%s</xliff:g>에 입력할 수 있습니다."</string>
+    <string name="setup_step4_action" msgid="600879797256942259">"추가 언어 설정"</string>
     <string name="setup_finish_action" msgid="276559243409465389">"완료됨"</string>
     <string name="show_setup_wizard_icon" msgid="5008028590593710830">"앱 아이콘 표시"</string>
     <string name="show_setup_wizard_icon_summary" msgid="4119998322536880213">"실행기에 애플리케이션 아이콘 표시"</string>

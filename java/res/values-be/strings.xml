@@ -200,9 +200,9 @@
     <string name="setup_step2_title" msgid="6860725447906690594">"Пераключыцца на прыкладанне <xliff:g id="APPLICATION_NAME">%s</xliff:g>."</string>
     <string name="setup_step2_instruction" msgid="9141481964870023336">"Выберыце \"<xliff:g id="APPLICATION_NAME">%s</xliff:g>\" як актыўны метад уводу тэксту."</string>
     <string name="setup_step2_action" msgid="1660330307159824337">"Пераключэнне метадаў уводу"</string>
-    <string name="setup_step3_title" msgid="3154757183631490281">"Усё гатова!"</string>
-    <string name="setup_step3_instruction" msgid="8025981829605426000">"Цяпер вы можаце ўводзіць ўсе свае любімыя прыкладанні з iмем <xliff:g id="APPLICATION_NAME">%s</xliff:g>."</string>
-    <string name="setup_step3_action" msgid="600879797256942259">"Наладка дадатковых моў"</string>
+    <string name="setup_step4_title" msgid="3154757183631490281">"Усё гатова!"</string>
+    <string name="setup_step4_instruction" msgid="8025981829605426000">"Цяпер вы можаце ўводзіць ўсе свае любімыя прыкладанні з iмем <xliff:g id="APPLICATION_NAME">%s</xliff:g>."</string>
+    <string name="setup_step4_action" msgid="600879797256942259">"Наладка дадатковых моў"</string>
     <string name="setup_finish_action" msgid="276559243409465389">"Гатова"</string>
     <string name="show_setup_wizard_icon" msgid="5008028590593710830">"Паказаць значок прыкладання"</string>
     <string name="show_setup_wizard_icon_summary" msgid="4119998322536880213">"Паказаць значок прыкладання ў панэлi запуску"</string>

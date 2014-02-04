@@ -186,9 +186,9 @@
     <string name="setup_step2_title" msgid="6860725447906690594">"Váltás a(z) <xliff:g id="APPLICATION_NAME">%s</xliff:g> alkalmazásra"</string>
     <string name="setup_step2_instruction" msgid="9141481964870023336">"Ezután válassza a(z) „<xliff:g id="APPLICATION_NAME">%s</xliff:g>”  alkalmazást aktív szövegbeviteli módszerként."</string>
     <string name="setup_step2_action" msgid="1660330307159824337">"Váltás a beviteli módok között"</string>
-    <string name="setup_step3_title" msgid="3154757183631490281">"Gratulálunk, máris elkészült!"</string>
-    <string name="setup_step3_instruction" msgid="8025981829605426000">"Immár minden kedvenc alkalmazásában gépelhet a(z) <xliff:g id="APPLICATION_NAME">%s</xliff:g> segítségével."</string>
-    <string name="setup_step3_action" msgid="600879797256942259">"Állítson be további nyelveket"</string>
+    <string name="setup_step4_title" msgid="3154757183631490281">"Gratulálunk, máris elkészült!"</string>
+    <string name="setup_step4_instruction" msgid="8025981829605426000">"Immár minden kedvenc alkalmazásában gépelhet a(z) <xliff:g id="APPLICATION_NAME">%s</xliff:g> segítségével."</string>
+    <string name="setup_step4_action" msgid="600879797256942259">"Állítson be további nyelveket"</string>
     <string name="setup_finish_action" msgid="276559243409465389">"Befejeződött"</string>
     <string name="show_setup_wizard_icon" msgid="5008028590593710830">"Alkalmazásikon megjelenítése"</string>
     <string name="show_setup_wizard_icon_summary" msgid="4119998322536880213">"Alkalmazásikon megjelenítése az indítóban"</string>

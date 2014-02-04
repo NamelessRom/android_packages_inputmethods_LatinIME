@@ -16,6 +16,8 @@
 
 package com.android.inputmethod.latin.debug;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -23,16 +25,20 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Environment;
-import android.os.PowerManager;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.inputmethod.latin.BinaryDictionaryFileDumper;
 import com.android.inputmethod.latin.BinaryDictionaryGetter;
 import com.android.inputmethod.latin.R;
 import com.android.inputmethod.latin.makedict.FormatSpec.FileHeader;
-import com.android.inputmethod.latin.utils.CollectionUtils;
 import com.android.inputmethod.latin.utils.DictionaryInfoUtils;
 import com.android.inputmethod.latin.utils.LocaleUtils;
 
@@ -46,13 +52,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Locale;
 
 /**
  * A class to read a local file as a dictionary for debugging purposes.
  */
-public class ExternalDictionaryGetterForDebug {
+public class ExternalDictionaryGetterForDebug extends Activity {
     public static final String SOURCE_FOLDER = Environment.getExternalStorageDirectory().getPath()
             + "/Nameless/LatinIME";
 
@@ -60,47 +65,63 @@ public class ExternalDictionaryGetterForDebug {
             = "http://sourceforge.net/projects/namelessrom/files/romextras/dictionaries/";
     private static final String URL_SUFFIX = "/download";
 
-    private static String[] findDictionariesInTheDownloadedFolder() {
-        final String[] fileNames = new String[]{
-                "main_bg.dict", "main_cs.dict", "main_da.dict", "main_de.dict",
-                "main_el.dict", "main_en.dict", "main_es.dict", "main_fi.dict",
-                "main_fr.dict", "main_hr.dict", "main_hu.dict", "main_it.dict",
-                "main_iw.dict", "main_ka.dict", "main_nb.dict", "main_nl.dict",
-                "main_pt_br.dict", "main_pt_pt.dict", "main_ru.dict", "main_sv.dict"
-        };
-        return fileNames;
+    private static final String[] fileNames = new String[]{
+            "main_bg.dict", "main_cs.dict", "main_da.dict", "main_de.dict",
+            "main_el.dict", "main_en.dict", "main_es.dict", "main_fi.dict",
+            "main_fr.dict", "main_hr.dict", "main_hu.dict", "main_it.dict",
+            "main_iw.dict", "main_ka.dict", "main_nb.dict", "main_nl.dict",
+            "main_pt_br.dict", "main_pt_pt.dict", "main_ru.dict", "main_sv.dict"
+    };
+
+    @Override
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        ListView lv = new ListView(this);
+
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, fileNames);
+        lv.setAdapter(adapter);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                final String fileName = fileNames[i];
+                final String url = URL_PREFIX + fileName + URL_SUFFIX;
+                if (!new File(SOURCE_FOLDER, fileName).exists()) {
+                    new DownloadTask(ExternalDictionaryGetterForDebug.this).execute(url, fileName);
+                } else {
+                    askInstallFile(ExternalDictionaryGetterForDebug.this, SOURCE_FOLDER, fileName,
+                            null /* completeRunnable */);
+                }
+            }
+        });
+
+        setContentView(lv);
+
+        final ActionBar bar = getActionBar();
+        if (bar != null) {
+            bar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
-    public static void chooseAndInstallDictionary(final Context context) {
-        final String[] fileNames = findDictionariesInTheDownloadedFolder();
-        showChooseFileDialog(context, fileNames);
-    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
 
-    private static void showChooseFileDialog(final Context context, final String[] fileNames) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.import_external_dictionary_multiple_files_title)
-                .setItems(fileNames, new OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which) {
-                        final String fileName = fileNames[which];
-                        final String url = URL_PREFIX + fileName + URL_SUFFIX;
-                        if (!new File(SOURCE_FOLDER, fileName).exists()) {
-                            new DownloadTask(context).execute(url, fileName);
-                        } else {
-                            askInstallFile(context, SOURCE_FOLDER, fileName,
-                                    null /* completeRunnable */);
-                        }
-                    }
-                })
-                .create().show();
+        final int id = menuItem.getItemId();
+        switch (id) {
+            case android.R.id.home:
+                onBackPressed(); // We need that to get back to our wizards
+                break;
+        }
+        return super.onOptionsItemSelected(menuItem);
     }
 
     /**
      * Shows a dialog which offers the user to install the external dictionary.
      */
-    public static void askInstallFile(final Context context, final String dirPath,
-                                      final String fileName, final Runnable completeRunnable) {
-        final File file = new File(dirPath, fileName.toString());
+    public void askInstallFile(final Context context, final String dirPath,
+                               final String fileName, final Runnable completeRunnable) {
+        final File file = new File(dirPath, fileName);
         final FileHeader header = DictionaryInfoUtils.getDictionaryFileHeaderOrNull(file);
         final String locale = header.getLocaleString();
         final String languageName = LocaleUtils.constructLocaleFromString(locale)
@@ -141,8 +162,8 @@ public class ExternalDictionaryGetterForDebug {
         }).create().show();
     }
 
-    private static void installFile(final Context context, final File file,
-                                    final FileHeader header) {
+    private void installFile(final Context context, final File file,
+                             final FileHeader header) {
         BufferedOutputStream outputStream = null;
         File tempFile = null;
         try {
@@ -175,7 +196,6 @@ public class ExternalDictionaryGetterForDebug {
                             dialog.dismiss();
                         }
                     }).create().show();
-            return;
         } finally {
             try {
                 if (null != outputStream) outputStream.close();
@@ -186,7 +206,7 @@ public class ExternalDictionaryGetterForDebug {
         }
     }
 
-    private static class DownloadTask extends AsyncTask<String, Integer, String> {
+    private class DownloadTask extends AsyncTask<String, Integer, String> {
 
         private String filePath = "";
         private String fileName = "";
@@ -276,7 +296,7 @@ public class ExternalDictionaryGetterForDebug {
             } else {
                 Toast.makeText(mContext
                         , mContext.getString(R.string.dialog_download_oops, SOURCE_FOLDER
-                            + File.separator + fileName)
+                        + File.separator + fileName)
                         , Toast.LENGTH_LONG).show();
             }
         }

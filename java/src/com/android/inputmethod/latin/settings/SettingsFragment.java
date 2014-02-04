@@ -230,9 +230,10 @@ public final class SettingsFragment extends InputMethodSettingsFragment
                     new Preference.OnPreferenceClickListener() {
                         @Override
                         public boolean onPreferenceClick(final Preference arg0) {
-                            ExternalDictionaryGetterForDebug.chooseAndInstallDictionary(
-                                    getActivity());
-                            mServiceNeedsRestart = true;
+                            final Intent i = new Intent();
+                            i.setAction("com.android.inputmethod.latin.debug.ExternalDictionaryGetterForDebug");
+                            startActivity(i);
+                            //mServiceNeedsRestart = true;
                             return true;
                         }
                     }

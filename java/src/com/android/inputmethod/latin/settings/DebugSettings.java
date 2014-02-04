@@ -73,16 +73,7 @@ public final class DebugSettings extends PreferenceFragment
         final PreferenceScreen readExternalDictionary =
                 (PreferenceScreen) findPreference(PREF_READ_EXTERNAL_DICTIONARY);
         if (null != readExternalDictionary) {
-            readExternalDictionary.setOnPreferenceClickListener(
-                    new Preference.OnPreferenceClickListener() {
-                        @Override
-                        public boolean onPreferenceClick(final Preference arg0) {
-                            ExternalDictionaryGetterForDebug.chooseAndInstallDictionary(
-                                    getActivity());
-                            mServiceNeedsRestart = true;
-                            return true;
-                        }
-                    });
+            getPreferenceScreen().removePreference(readExternalDictionary);
         }
 
         mServiceNeedsRestart = false;
