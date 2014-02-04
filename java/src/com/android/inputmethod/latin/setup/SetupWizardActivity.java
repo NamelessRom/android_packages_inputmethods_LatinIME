@@ -246,7 +246,15 @@ public final class SetupWizardActivity extends Activity implements View.OnClickL
         final int currentStep = determineSetupStepNumber();
         final int nextStep;
         if (v == mActionStart) {
-            nextStep = STEP_1;
+            if (!SetupActivity.isThisImeEnabled(this, mImm)) {
+                nextStep = STEP_1;
+            } else if (!SetupActivity.isThisImeCurrent(this, mImm)) {
+                nextStep = STEP_2;
+            } else if (!SetupActivity.isDictionaryAware(this)) {
+                nextStep = STEP_3;
+            } else {
+                nextStep = STEP_4;
+            }
         } else if (v == mActionNext) {
             nextStep = mStepNumber + 1;
         } else if (v == mStep1Bullet && currentStep == STEP_2) {
@@ -254,6 +262,7 @@ public final class SetupWizardActivity extends Activity implements View.OnClickL
         } else {
             nextStep = mStepNumber;
         }
+
         if (mStepNumber != nextStep) {
             mStepNumber = nextStep;
             updateSetupStepView();
@@ -318,9 +327,6 @@ public final class SetupWizardActivity extends Activity implements View.OnClickL
         if (stepNumber == STEP_1) {
             return STEP_WELCOME;
         }
-        if (stepNumber == STEP_4) {
-            return STEP_LAUNCHING_IME_SETTINGS;
-        }
         return stepNumber;
     }
 
@@ -335,7 +341,7 @@ public final class SetupWizardActivity extends Activity implements View.OnClickL
         if (!SetupActivity.isDictionaryAware(this)) {
             return STEP_3;
         }
-        return STEP_4;
+        return STEP_1;
     }
 
     @Override
