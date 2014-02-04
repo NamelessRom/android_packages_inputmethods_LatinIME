@@ -70,9 +70,13 @@
 
         <activity android:name=".setup.SetupWizardActivity"
                 android:label="@string/english_ime_name"
-                android:clearTaskOnLaunch="true">
+                android:clearTaskOnLaunch="true"
+                android:immersive="true">
             <intent-filter>
+                <action android:name="com.android.inputmethod.latin.setup.SetupWizardActivity" />
                 <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
