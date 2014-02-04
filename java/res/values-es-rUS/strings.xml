@@ -186,9 +186,9 @@
     <string name="setup_step2_title" msgid="6860725447906690594">"Cambiar a <xliff:g id="APPLICATION_NAME">%s</xliff:g>"</string>
     <string name="setup_step2_instruction" msgid="9141481964870023336">"A continuación, selecciona \"<xliff:g id="APPLICATION_NAME">%s</xliff:g>\" como tu método de entrada de texto activo."</string>
     <string name="setup_step2_action" msgid="1660330307159824337">"Cambiar métodos de entrada"</string>
-    <string name="setup_step3_title" msgid="3154757183631490281">"¡Felicitaciones, ya terminaste!"</string>
-    <string name="setup_step3_instruction" msgid="8025981829605426000">"Ahora puedes escribir en todas las aplicaciones que quieras con <xliff:g id="APPLICATION_NAME">%s</xliff:g>."</string>
-    <string name="setup_step3_action" msgid="600879797256942259">"Configurar otros idiomas"</string>
+    <string name="setup_step4_title" msgid="3154757183631490281">"¡Felicitaciones, ya terminaste!"</string>
+    <string name="setup_step4_instruction" msgid="8025981829605426000">"Ahora puedes escribir en todas las aplicaciones que quieras con <xliff:g id="APPLICATION_NAME">%s</xliff:g>."</string>
+    <string name="setup_step4_action" msgid="600879797256942259">"Configurar otros idiomas"</string>
     <string name="setup_finish_action" msgid="276559243409465389">"Listo"</string>
     <string name="show_setup_wizard_icon" msgid="5008028590593710830">"Mostrar ícono de aplicación"</string>
     <string name="show_setup_wizard_icon_summary" msgid="4119998322536880213">"Mostrar ícono de aplicación en el selector"</string>

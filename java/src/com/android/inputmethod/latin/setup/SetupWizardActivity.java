@@ -24,6 +24,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -68,8 +69,9 @@ public final class SetupWizardActivity extends Activity implements View.OnClickL
     private static final int STEP_1 = 1;
     private static final int STEP_2 = 2;
     private static final int STEP_3 = 3;
-    private static final int STEP_LAUNCHING_IME_SETTINGS = 4;
-    private static final int STEP_BACK_FROM_IME_SETTINGS = 5;
+    private static final int STEP_4 = 4;
+    private static final int STEP_LAUNCHING_IME_SETTINGS = 5;
+    private static final int STEP_BACK_FROM_IME_SETTINGS = 6;
 
     private SettingsPoolingHandler mHandler;
 
@@ -181,10 +183,23 @@ public final class SetupWizardActivity extends Activity implements View.OnClickL
         step3.setAction(new Runnable() {
             @Override
             public void run() {
-                invokeSubtypeEnablerOfThisIme();
+                invokeDictionaryDownload();
             }
         });
         mSetupStepGroup.addStep(step3);
+
+        final SetupStep step4 = new SetupStep(STEP_4, applicationName,
+                (TextView)findViewById(R.id.setup_step4_bullet), findViewById(R.id.setup_step4),
+                R.string.setup_step4_title, R.string.setup_step4_instruction,
+                0 /* finishedInstruction */, R.drawable.ic_setup_step3,
+                R.string.setup_step4_action);
+        step4.setAction(new Runnable() {
+            @Override
+            public void run() {
+                invokeSubtypeEnablerOfThisIme();
+            }
+        });
+        mSetupStepGroup.addStep(step4);
 
         mWelcomeVideoUri = new Uri.Builder()
                 .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
@@ -289,12 +304,25 @@ public final class SetupWizardActivity extends Activity implements View.OnClickL
         startActivity(intent);
     }
 
+    void invokeDictionaryDownload() {
+        final InputMethodInfo imi = SetupActivity.getInputMethodInfoOf(getPackageName(), mImm);
+        if (imi == null) {
+            return;
+        }
+        final Intent i = new Intent();
+        i.setAction("com.android.inputmethod.latin.debug.ExternalDictionaryGetterForDebug");
+        startActivity(i);
+        PreferenceManager.getDefaultSharedPreferences(this).edit()
+                .putBoolean(com.android.inputmethod.latin.settings.Settings
+                        .PREF_KEY_IS_DICTIONARY_AWARE, true).commit();
+    }
+
     private int determineSetupStepNumberFromLauncher() {
         final int stepNumber = determineSetupStepNumber();
         if (stepNumber == STEP_1) {
             return STEP_WELCOME;
         }
-        if (stepNumber == STEP_3) {
+        if (stepNumber == STEP_4) {
             return STEP_LAUNCHING_IME_SETTINGS;
         }
         return stepNumber;
@@ -308,7 +336,10 @@ public final class SetupWizardActivity extends Activity implements View.OnClickL
         if (!SetupActivity.isThisImeCurrent(this, mImm)) {
             return STEP_2;
         }
-        return STEP_3;
+        if (!SetupActivity.isDictionaryAware(this)) {
+            return STEP_3;
+        }
+        return STEP_4;
     }
 
     @Override
@@ -324,7 +355,7 @@ public final class SetupWizardActivity extends Activity implements View.OnClickL
     }
 
     private static boolean isInSetupSteps(final int stepNumber) {
-        return stepNumber >= STEP_1 && stepNumber <= STEP_3;
+        return stepNumber >= STEP_1 && stepNumber <= STEP_4;
     }
 
     @Override
@@ -415,7 +446,7 @@ public final class SetupWizardActivity extends Activity implements View.OnClickL
         final boolean isStepActionAlreadyDone = mStepNumber < determineSetupStepNumber();
         mSetupStepGroup.enableStep(mStepNumber, isStepActionAlreadyDone);
         mActionNext.setVisibility(isStepActionAlreadyDone ? View.VISIBLE : View.GONE);
-        mActionFinish.setVisibility((mStepNumber == STEP_3) ? View.VISIBLE : View.GONE);
+        mActionFinish.setVisibility((mStepNumber == STEP_4) ? View.VISIBLE : View.GONE);
     }
 
     static final class SetupStep implements View.OnClickListener {

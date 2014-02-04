@@ -186,9 +186,9 @@
     <string name="setup_step2_title" msgid="6860725447906690594">"Shintshela ku-<xliff:g id="APPLICATION_NAME">%s</xliff:g>."</string>
     <string name="setup_step2_instruction" msgid="9141481964870023336">"Okulandelayo, khetha i-\"<xliff:g id="APPLICATION_NAME">%s</xliff:g>\" njengendlela yakho yokufaka umbhalo osebenzayo."</string>
     <string name="setup_step2_action" msgid="1660330307159824337">"Shintsha izindlela zokufaka"</string>
-    <string name="setup_step3_title" msgid="3154757183631490281">"Siyakuhalalisela, usumi ngomumo!"</string>
-    <string name="setup_step3_instruction" msgid="8025981829605426000">"Manje usungathayipha ngokufaka zonke izinhlelo zokusebenza eziyizintandokazi zakho nge-<xliff:g id="APPLICATION_NAME">%s</xliff:g>."</string>
-    <string name="setup_step3_action" msgid="600879797256942259">"Lungiselela izilimi ezingeziwe"</string>
+    <string name="setup_step4_title" msgid="3154757183631490281">"Siyakuhalalisela, usumi ngomumo!"</string>
+    <string name="setup_step4_instruction" msgid="8025981829605426000">"Manje usungathayipha ngokufaka zonke izinhlelo zokusebenza eziyizintandokazi zakho nge-<xliff:g id="APPLICATION_NAME">%s</xliff:g>."</string>
+    <string name="setup_step4_action" msgid="600879797256942259">"Lungiselela izilimi ezingeziwe"</string>
     <string name="setup_finish_action" msgid="276559243409465389">"Iqedile"</string>
     <string name="show_setup_wizard_icon" msgid="5008028590593710830">"Bonisa isithonjana sohlelo lokusebenza"</string>
     <string name="show_setup_wizard_icon_summary" msgid="4119998322536880213">"Bonisa isithonjana sohlelo lokusebenza kusiqalisi"</string>

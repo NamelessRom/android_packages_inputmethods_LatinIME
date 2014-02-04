@@ -186,9 +186,9 @@
     <string name="setup_step2_title" msgid="6860725447906690594">"Превключете към <xliff:g id="APPLICATION_NAME">%s</xliff:g>"</string>
     <string name="setup_step2_instruction" msgid="9141481964870023336">"След това изберете <xliff:g id="APPLICATION_NAME">%s</xliff:g> като активен метод на въвеждане на текст."</string>
     <string name="setup_step2_action" msgid="1660330307159824337">"Превключване на методите на въвеждане"</string>
-    <string name="setup_step3_title" msgid="3154757183631490281">"Поздравления! Вече сте готови!"</string>
-    <string name="setup_step3_instruction" msgid="8025981829605426000">"Вече можете да пишете във всичките си любими приложения посредством <xliff:g id="APPLICATION_NAME">%s</xliff:g>."</string>
-    <string name="setup_step3_action" msgid="600879797256942259">"Конфигуриране на допълнителни езици"</string>
+    <string name="setup_step4_title" msgid="3154757183631490281">"Поздравления! Вече сте готови!"</string>
+    <string name="setup_step4_instruction" msgid="8025981829605426000">"Вече можете да пишете във всичките си любими приложения посредством <xliff:g id="APPLICATION_NAME">%s</xliff:g>."</string>
+    <string name="setup_step4_action" msgid="600879797256942259">"Конфигуриране на допълнителни езици"</string>
     <string name="setup_finish_action" msgid="276559243409465389">"Край"</string>
     <string name="show_setup_wizard_icon" msgid="5008028590593710830">"Показв. на иконата на прилож."</string>
     <string name="show_setup_wizard_icon_summary" msgid="4119998322536880213">"Показване на иконата на приложението в стартовия панел"</string>

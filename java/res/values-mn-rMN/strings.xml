@@ -186,9 +186,9 @@
     <string name="setup_step2_title" msgid="6860725447906690594">"<xliff:g id="APPLICATION_NAME">%s</xliff:g> рүү шилжих"</string>
     <string name="setup_step2_instruction" msgid="9141481964870023336">"Дараа нь \"<xliff:g id="APPLICATION_NAME">%s</xliff:g>\"-г өөрийн идэвхтэй текст-оруулах аргаар сонгоно уу."</string>
     <string name="setup_step2_action" msgid="1660330307159824337">"Оруулах аргыг солих"</string>
-    <string name="setup_step3_title" msgid="3154757183631490281">"Баяр хүргэе, та бүгдийг нь тохируулчихлаа!"</string>
-    <string name="setup_step3_instruction" msgid="8025981829605426000">"Та одоо өөрийн дуртай апп-ууд дотроо <xliff:g id="APPLICATION_NAME">%s</xliff:g> ашиглан бичих болохоор боллоо."</string>
-    <string name="setup_step3_action" msgid="600879797256942259">"Нэмэлт хэлнүүдийг тохируулах"</string>
+    <string name="setup_step4_title" msgid="3154757183631490281">"Баяр хүргэе, та бүгдийг нь тохируулчихлаа!"</string>
+    <string name="setup_step4_instruction" msgid="8025981829605426000">"Та одоо өөрийн дуртай апп-ууд дотроо <xliff:g id="APPLICATION_NAME">%s</xliff:g> ашиглан бичих болохоор боллоо."</string>
+    <string name="setup_step4_action" msgid="600879797256942259">"Нэмэлт хэлнүүдийг тохируулах"</string>
     <string name="setup_finish_action" msgid="276559243409465389">"Дууссан"</string>
     <string name="show_setup_wizard_icon" msgid="5008028590593710830">"Апп дүрсийг харуулах"</string>
     <string name="show_setup_wizard_icon_summary" msgid="4119998322536880213">"Эхлүүлэгч дээр аппликешний дүрсийг харуулах"</string>
