@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2013 The Android Open Source Project
+ * Modifications (C) 2014 The NamelessRom Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,11 +29,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.inputmethod.latin.BinaryDictionaryFileDumper;
@@ -75,30 +79,31 @@ public class ExternalDictionaryGetterForDebug extends Activity {
             "main_sl.dict", "main_sr.dict", "main_sv.dict", "main_tr.dict"
     };
 
+    private static final Integer[] localeNames = new Integer[]{
+            R.string.dict_main_bg, R.string.dict_main_cs, R.string.dict_main_da,
+            R.string.dict_main_de, R.string.dict_main_el, R.string.dict_main_en,
+            R.string.dict_main_en_gb, R.string.dict_main_en_us, R.string.dict_main_es,
+            R.string.dict_main_fi, R.string.dict_main_fr, R.string.dict_main_hr,
+            R.string.dict_main_hu, R.string.dict_main_it, R.string.dict_main_iw,
+            R.string.dict_main_ka, R.string.dict_main_lt, R.string.dict_main_lv,
+            R.string.dict_main_nb, R.string.dict_main_nl, R.string.dict_main_pl,
+            R.string.dict_main_pt_br, R.string.dict_main_pt_pt, R.string.dict_main_ru,
+            R.string.dict_main_sl, R.string.dict_main_sr, R.string.dict_main_sv,
+            R.string.dict_main_tr
+    };
+
+    private ListView mListView;
+    private CustomArrayAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        ListView lv = new ListView(this);
+        setContentView(R.layout.activity_dict_import);
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, fileNames);
-        lv.setAdapter(adapter);
+        mListView = (ListView) findViewById(R.id.dict_listview);
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final String fileName = fileNames[i];
-                final String url = URL_PREFIX + fileName + URL_SUFFIX;
-                if (!new File(SOURCE_FOLDER, fileName).exists()) {
-                    new DownloadTask(ExternalDictionaryGetterForDebug.this).execute(url, fileName);
-                } else {
-                    askInstallFile(ExternalDictionaryGetterForDebug.this, SOURCE_FOLDER, fileName,
-                            null /* completeRunnable */);
-                }
-            }
-        });
-
-        setContentView(lv);
+        mAdapter = new CustomArrayAdapter(this, localeNames);
+        mListView.setAdapter(mAdapter);
 
         final ActionBar bar = getActionBar();
         if (bar != null) {
@@ -213,6 +218,84 @@ public class ExternalDictionaryGetterForDebug extends Activity {
         }
     }
 
+    private class CustomArrayAdapter extends ArrayAdapter<Integer> {
+        private final Context context;
+
+        public CustomArrayAdapter(Context context, Integer[] values) {
+            super(context, R.layout.list_item_dict, values);
+            this.context = context;
+        }
+
+        private class ViewHolder {
+            private final TextView dictName;
+            private final Button dictAction;
+
+            private ViewHolder(View rootView) {
+                dictName = (TextView) rootView.findViewById(R.id.dict_name);
+                dictAction = (Button) rootView.findViewById(R.id.dict_action);
+            }
+
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            final LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View v = inflater.inflate(R.layout.list_item_dict, parent, false);
+
+            ViewHolder holder = (ViewHolder) v.getTag();
+            if (holder == null) {
+                holder = new ViewHolder(v);
+                v.setTag(holder);
+            }
+            final String fileName = fileNames[position];
+            final String fileCleanName = getString(localeNames[position]);
+            final String url = URL_PREFIX + fileName + URL_SUFFIX;
+            final boolean fileExists = new File(SOURCE_FOLDER, fileName).exists();
+
+            holder.dictName.setText(fileCleanName);
+
+            holder.dictAction.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!fileExists) {
+                        askDownloadFile(url, fileName, fileCleanName);
+                    } else {
+                        askInstallFile(ExternalDictionaryGetterForDebug.this, SOURCE_FOLDER, fileName,
+                                null /* completeRunnable */);
+                    }
+                }
+            });
+            holder.dictAction.setText(fileExists
+                    ? R.string.dict_action_install
+                    : R.string.dict_action_download);
+
+            return v;
+        }
+    }
+
+    private void askDownloadFile(final String url, final String fileName
+            , final String fileCleanName) {
+        final Context context = ExternalDictionaryGetterForDebug.this;
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        dialog.setTitle(getString(R.string.dict_dialog_download_title, fileCleanName));
+        dialog.setMessage(getString(R.string.dict_dialog_download_message, fileCleanName));
+        dialog.setNegativeButton(android.R.string.no, new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        dialog.setPositiveButton(android.R.string.yes, new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                new DownloadTask(ExternalDictionaryGetterForDebug.this)
+                        .execute(url, fileName);
+            }
+        });
+        dialog.show();
+    }
+
     private class DownloadTask extends AsyncTask<String, Integer, String> {
 
         private String filePath = "";
@@ -298,8 +381,9 @@ public class ExternalDictionaryGetterForDebug extends Activity {
         protected void onPostExecute(String s) {
             mDialog.dismiss();
             if (!filePath.isEmpty() && !mError) {
-                Log.v("LatinIME", "Source: " + SOURCE_FOLDER + " | fileName: " + fileName);
-                askInstallFile(mContext, SOURCE_FOLDER, fileName, null /* completeRunnable */);
+                if (mListView != null) {
+                    mListView.invalidateViews();
+                }
             } else {
                 Toast.makeText(mContext
                         , mContext.getString(R.string.dialog_download_oops, SOURCE_FOLDER

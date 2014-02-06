@@ -33,4 +33,40 @@
     <string name="setup_step4_instruction">Now you can type in all your favorite apps with <xliff:g id="application_name">%s</xliff:g>.</string>
     <!-- The label of the button that triggers the screen for configuring additional languages of the keyboard. [CHAR_LIMIT=64] -->
     <string name="setup_step4_action">Configure additional languages</string>
+
+    <!-- Dictionaries -->
+    <string name="dict_main_bg">main_bg.dict</string>
+    <string name="dict_main_cs">Czech</string>
+    <string name="dict_main_da">Danish</string>
+    <string name="dict_main_de">German</string>
+    <string name="dict_main_el">Greek</string>
+    <string name="dict_main_en">English (General)</string>
+    <string name="dict_main_en_gb">English (United Kingdom)</string>
+    <string name="dict_main_en_us">English (United States)</string>
+    <string name="dict_main_es">Spanish</string>
+    <string name="dict_main_fi">Finnish</string>
+    <string name="dict_main_fr">French</string>
+    <string name="dict_main_hr">Croatian</string>
+    <string name="dict_main_hu">main_hu.dict</string>
+    <string name="dict_main_it">Italian</string>
+    <string name="dict_main_iw">Hebrew</string>
+    <string name="dict_main_ka">main_ka.dict</string>
+    <string name="dict_main_lt">Lithuanian</string>
+    <string name="dict_main_lv">Latvian</string>
+    <string name="dict_main_nb">Norwegian</string>
+    <string name="dict_main_nl">Dutch</string>
+    <string name="dict_main_pl">Polish</string>
+    <string name="dict_main_pt_br">Portuguese (Brazil)</string>
+    <string name="dict_main_pt_pt">Portuguese (Portugal)</string>
+    <string name="dict_main_ru">Russian</string>
+    <string name="dict_main_sl">Slovenian</string>
+    <string name="dict_main_sr">Serbian</string>
+    <string name="dict_main_sv">Swedish</string>
+    <string name="dict_main_tr">Turkish</string>
+
+    <string name="dict_action_install">Install</string>
+    <string name="dict_action_download">Download</string>
+    <string name="dict_dialog_download_title">Download: %s</string>
+    <string name="dict_dialog_download_message">Do you really want to download the dictionary for \"%s\"?</string>
+
 </resources>
