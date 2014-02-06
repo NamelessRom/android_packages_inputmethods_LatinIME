@@ -67,10 +67,12 @@ public class ExternalDictionaryGetterForDebug extends Activity {
 
     private static final String[] fileNames = new String[]{
             "main_bg.dict", "main_cs.dict", "main_da.dict", "main_de.dict",
-            "main_el.dict", "main_en.dict", "main_es.dict", "main_fi.dict",
-            "main_fr.dict", "main_hr.dict", "main_hu.dict", "main_it.dict",
-            "main_iw.dict", "main_ka.dict", "main_nb.dict", "main_nl.dict",
-            "main_pt_br.dict", "main_pt_pt.dict", "main_ru.dict", "main_sv.dict"
+            "main_el.dict", "main_en.dict", "main_en_gb.dict", "main_en_us.dict",
+            "main_es.dict", "main_fi.dict", "main_fr.dict", "main_hr.dict",
+            "main_hu.dict", "main_it.dict", "main_iw.dict", "main_ka.dict",
+            "main_lt.dict", "main_lv.dict", "main_nb.dict", "main_nl.dict",
+            "main_pl.dict", "main_pt_br.dict", "main_pt_pt.dict", "main_ru.dict",
+            "main_sl.dict", "main_sr.dict", "main_sv.dict", "main_tr.dict"
     };
 
     @Override
