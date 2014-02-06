@@ -126,8 +126,13 @@ public class ExternalDictionaryGetterForDebug extends Activity {
         final File file = new File(dirPath, fileName);
         final FileHeader header = DictionaryInfoUtils.getDictionaryFileHeaderOrNull(file);
         final String locale = header.getLocaleString();
-        final String languageName = LocaleUtils.constructLocaleFromString(locale)
-                .getDisplayName(Locale.getDefault());
+        String languageName;
+        if (locale != null && !locale.isEmpty()) {
+            languageName = LocaleUtils.constructLocaleFromString(locale)
+                    .getDisplayName(Locale.getDefault());
+        } else {
+            languageName = "UNKNOWN";
+        }
         final String title = String.format(
                 context.getString(R.string.import_external_dictionary_confirm_install_title));
         final String message = String.format(
