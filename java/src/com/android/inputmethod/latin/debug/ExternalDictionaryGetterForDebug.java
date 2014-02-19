@@ -39,15 +39,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.inputmethod.latin.BinaryDictionaryFileDumper;
-import com.android.inputmethod.latin.BinaryDictionaryGetter;
 import com.android.inputmethod.latin.R;
 import com.android.inputmethod.latin.makedict.FormatSpec.FileHeader;
 import com.android.inputmethod.latin.utils.DictionaryInfoUtils;
 import com.android.inputmethod.latin.utils.LocaleUtils;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -56,6 +52,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.channels.FileChannel;
 import java.util.Locale;
 
 /**
@@ -93,7 +90,6 @@ public class ExternalDictionaryGetterForDebug extends Activity {
     };
 
     private ListView mListView;
-    private CustomArrayAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -102,7 +98,7 @@ public class ExternalDictionaryGetterForDebug extends Activity {
 
         mListView = (ListView) findViewById(R.id.dict_listview);
 
-        mAdapter = new CustomArrayAdapter(this, localeNames);
+        final CustomArrayAdapter mAdapter = new CustomArrayAdapter(this, localeNames);
         mListView.setAdapter(mAdapter);
 
         final ActionBar bar = getActionBar();
@@ -126,8 +122,8 @@ public class ExternalDictionaryGetterForDebug extends Activity {
     /**
      * Shows a dialog which offers the user to install the external dictionary.
      */
-    public void askInstallFile(final Context context, final String dirPath,
-                               final String fileName, final Runnable completeRunnable) {
+    private void askInstallFile(final Context context, final String dirPath,
+                                final String fileName, final Runnable completeRunnable) {
         final File file = new File(dirPath, fileName);
         final FileHeader header = DictionaryInfoUtils.getDictionaryFileHeaderOrNull(file);
         final String locale = header.getLocaleString();
@@ -157,7 +153,7 @@ public class ExternalDictionaryGetterForDebug extends Activity {
                 }).setPositiveButton(android.R.string.ok, new OnClickListener() {
             @Override
             public void onClick(final DialogInterface dialog, final int which) {
-                installFile(context, file, header);
+                installFile(context, file, header, fileName);
                 dialog.dismiss();
                 if (completeRunnable != null) {
                     completeRunnable.run();
@@ -174,30 +170,70 @@ public class ExternalDictionaryGetterForDebug extends Activity {
         }).create().show();
     }
 
+    private void askUninstallFile(final Context context, final String dirPath,
+                                  final String fileName, final String localeName) {
+        final String title = String.format(
+                context.getString(R.string.import_external_dictionary_confirm_uninstall_title));
+        final String message = String.format(
+                context.getString(R.string.import_external_dictionary_confirm_uninstall_message),
+                localeName);
+
+        new AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(message)
+                .setNegativeButton(android.R.string.cancel, new OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        dialog.dismiss();
+                    }
+                }).setPositiveButton(android.R.string.ok, new OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialog, final int which) {
+                final File f = new File(dirPath, fileName);
+                if (f.delete()) {
+                    Toast.makeText(context, R.string.dict_action_uninstall_success,
+                            Toast.LENGTH_SHORT).show();
+                }
+                refreshListView();
+                dialog.dismiss();
+            }
+        }).create().show();
+    }
+
     private void installFile(final Context context, final File file,
-                             final FileHeader header) {
-        BufferedOutputStream outputStream = null;
-        File tempFile = null;
+                             final FileHeader header, final String fileName) {
+        boolean error = false;
+
+        FileInputStream inputStream = null;
+        FileOutputStream outputStream = null;
+
         try {
-            final String locale = header.getLocaleString();
-            // Create the id for a main dictionary for this locale
-            final String id = BinaryDictionaryGetter.MAIN_DICTIONARY_CATEGORY
-                    + BinaryDictionaryGetter.ID_CATEGORY_SEPARATOR + locale;
-            final String finalFileName = DictionaryInfoUtils.getCacheFileName(id, locale, context);
-            final String tempFileName = BinaryDictionaryGetter.getTempFileName(id, context);
-            tempFile = new File(tempFileName);
-            tempFile.delete();
-            outputStream = new BufferedOutputStream(new FileOutputStream(tempFile));
-            final BufferedInputStream bufferedStream = new BufferedInputStream(
-                    new FileInputStream(file));
-            BinaryDictionaryFileDumper.checkMagicAndCopyFileTo(bufferedStream, outputStream);
-            outputStream.flush();
-            final File finalFile = new File(finalFileName);
+            final String locale = header.getLocaleString().toLowerCase();
+            final File finalFile = new File(getFilesDir() + File.separator
+                    + "dicts" + File.separator + locale, fileName);
+            final File parentDir = new File(getFilesDir() + File.separator
+                    + "dicts" + File.separator + locale);
+
+            if (!parentDir.exists() || !parentDir.isDirectory()) {
+                if (!parentDir.mkdirs()) {
+                    throw new IOException("Could not create directories!");
+                }
+            }
             finalFile.delete();
-            if (!tempFile.renameTo(finalFile)) {
-                throw new IOException("Can't move the file to its final name");
+
+            inputStream = new FileInputStream(file);
+            outputStream = new FileOutputStream(finalFile);
+
+            FileChannel inChannel = inputStream.getChannel();
+            FileChannel outChannel = outputStream.getChannel();
+            inChannel.transferTo(0, inChannel.size(), outChannel);
+
+            if (!finalFile.exists()) {
+                throw new IOException("Can't move the file to its final name: "
+                        + finalFile.getAbsolutePath());
             }
         } catch (IOException e) {
+            error = true;
             // There was an error: show a dialog
             new AlertDialog.Builder(context)
                     .setTitle(R.string.error)
@@ -211,11 +247,22 @@ public class ExternalDictionaryGetterForDebug extends Activity {
         } finally {
             try {
                 if (null != outputStream) outputStream.close();
-                if (null != tempFile) tempFile.delete();
+                if (null != inputStream) inputStream.close();
             } catch (IOException e) {
                 // Don't do anything
             }
         }
+
+        if (!error) {
+            Toast.makeText(context,
+                    R.string.dict_action_install_success, Toast.LENGTH_SHORT).show();
+        }
+
+        refreshListView();
+    }
+
+    private void refreshListView() {
+        mListView.invalidateViews();
     }
 
     private class CustomArrayAdapter extends ArrayAdapter<Integer> {
@@ -252,13 +299,20 @@ public class ExternalDictionaryGetterForDebug extends Activity {
             final String fileCleanName = getString(localeNames[position]);
             final String url = URL_PREFIX + fileName + URL_SUFFIX;
             final boolean fileExists = new File(SOURCE_FOLDER, fileName).exists();
+            final String locale = fileName.replace("main_", "").replace(".dict", "").toLowerCase();
+            final String filePath = getFilesDir() + File.separator
+                    + "dicts" + File.separator + locale;
+            final boolean isInstalled = new File(filePath, fileName).exists();
 
             holder.dictName.setText(fileCleanName);
 
             holder.dictAction.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (!fileExists) {
+                    if (isInstalled) {
+                        askUninstallFile(ExternalDictionaryGetterForDebug.this, filePath, fileName,
+                                fileCleanName);
+                    } else if (!fileExists) {
                         askDownloadFile(url, fileName, fileCleanName);
                     } else {
                         askInstallFile(ExternalDictionaryGetterForDebug.this, SOURCE_FOLDER, fileName,
@@ -266,9 +320,11 @@ public class ExternalDictionaryGetterForDebug extends Activity {
                     }
                 }
             });
-            holder.dictAction.setText(fileExists
+            holder.dictAction.setText(isInstalled
+                    ? R.string.dict_action_uninstall
+                    : (fileExists
                     ? R.string.dict_action_install
-                    : R.string.dict_action_download);
+                    : R.string.dict_action_download));
 
             return v;
         }
@@ -383,6 +439,7 @@ public class ExternalDictionaryGetterForDebug extends Activity {
             if (!filePath.isEmpty() && !mError) {
                 if (mListView != null) {
                     mListView.invalidateViews();
+                    askInstallFile(mContext, SOURCE_FOLDER, fileName, null);
                 }
             } else {
                 Toast.makeText(mContext

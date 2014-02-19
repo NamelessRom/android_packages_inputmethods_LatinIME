@@ -65,8 +65,17 @@
     <string name="dict_main_tr">Turkish</string>
 
     <string name="dict_action_install">Install</string>
+    <string name="dict_action_install_success">Successfully installed dictionary!</string>
+    <string name="dict_action_uninstall">Uninstall</string>
+    <string name="dict_action_uninstall_success">Successfully uninstalled dictionary!</string>
     <string name="dict_action_download">Download</string>
     <string name="dict_dialog_download_title">Download: %s</string>
     <string name="dict_dialog_download_message">Do you really want to download the dictionary for \"%s\"?</string>
+
+    <!-- Title of the confirmation dialog to install a file as an external dictionary [CHAR LIMIT=50] -->
+    <string name="import_external_dictionary_confirm_uninstall_title">Confirm uninstallation</string>
+
+    <!-- Message of the confirmation dialog to install a file as an external dictionary -->
+    <string name="import_external_dictionary_confirm_uninstall_message">Are you sure you want to uninstall the dictionary for <xliff:g id="locale_name">%s</xliff:g> language?</string>
 
 </resources>
