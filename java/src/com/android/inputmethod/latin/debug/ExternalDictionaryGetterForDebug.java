@@ -386,6 +386,12 @@ public class ExternalDictionaryGetterForDebug extends Activity {
                 Log.v("LatinIME", "Url: " + url);
                 fileName = pParams[1];
                 filePath = SOURCE_FOLDER + File.separator + fileName;
+
+                final File source = new File(SOURCE_FOLDER);
+                if (!source.exists() || !source.isDirectory()) {
+                    source.mkdirs();
+                }
+
                 connection = (HttpURLConnection) url.openConnection();
                 connection.connect();
 
